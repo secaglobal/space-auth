@@ -1,0 +1,20 @@
+{
+  "name": "space-auth",
+  "version": "0.0.2",
+  "dependencies": {
+    "express": "*",
+    "coffee-script": "*",
+    "request": "*",
+    "norman": "git://github.com/secaglobal/norman.git",
+    "space-core": "git://github.com/secaglobal/space-core.git",
+    "q": "*",
+    "underscore": "*",
+    "MD5": "*"
+  },
+  "devDependencies": {
+    "node-dev": "*",
+    "mocha": "*",
+    "sinon": "*",
+    "chai": "*"
+  }
+}
