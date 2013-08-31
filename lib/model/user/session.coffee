@@ -1,7 +1,7 @@
-ORM = require 'norman'
-User = require '../user'
-Exception = require '../../exception'
 md5 = require 'MD5'
+ORM = require 'norman'
+Exception = require('space-core').Exception
+User = require '../user'
 
 class UserSession extends ORM.Model
     @schema: new ORM.Schema 'UserSession',

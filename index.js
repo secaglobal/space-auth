@@ -6,8 +6,8 @@ module.exports = {
     },
 
     Model: {
-        UserSession: require('./lib/user/session'),
-        User: require('./lib/user')
+        UserSession: require('./lib/model/user/session'),
+        User: require('./lib/model/user')
     },
 
     route: function(router, point) {
