@@ -1,6 +1,6 @@
 {
   "name": "space-auth",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "dependencies": {
     "express": "*",
     "coffee-script": "*",
