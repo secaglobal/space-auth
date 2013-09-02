@@ -66,4 +66,4 @@ class UserWebAPI extends WebAPI
             .fail (err) ->
                 res.error(err.toString(), err.code).render()
 
-module.exports = new UserWebAPI
+module.exports = UserWebAPI
