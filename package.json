@@ -9,7 +9,8 @@
     "space-core": "git://github.com/secaglobal/space-core.git",
     "q": "*",
     "underscore": "*",
-    "MD5": "*"
+    "MD5": "*",
+    "validator": "*"
   },
   "devDependencies": {
     "node-dev": "*",

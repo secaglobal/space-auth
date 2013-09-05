@@ -1,4 +1,6 @@
+Core = require 'space-core'
 ORM = require 'norman'
+md5 = require 'MD5'
 
 class User extends ORM.Model
     @schema: new ORM.Schema 'User',
@@ -7,8 +9,15 @@ class User extends ORM.Model
         added: Number,
         projectGroupId: {type: Number, require: true}
 
-    @login: (email, password) ->
-        throw 'TODO spec'
+    @login: (email, password, projectGroupId) ->
+        new ORM.Collection(
+            model: User,
+            filters:
+                email: email,
+                password: md5(password),
+                projectGroupId: projectGroupId
+        ).load().then (col) ->
+            col.first() or throw new Core.Exception('USER_LOGIN__WRONG_CREDENTIALS')
 
     @checkEmail: (email) ->
         throw 'TODO spec'

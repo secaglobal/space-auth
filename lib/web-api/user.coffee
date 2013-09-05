@@ -1,5 +1,6 @@
 md5 = require 'MD5'
 _ = require 'underscore'
+validate = require('validator').check
 User = require '../model/user'
 UserSession = require '../model/user/session'
 Project = require '../model/project'
@@ -7,9 +8,9 @@ WebAPI = require('space-core').WebAPI
 Collection = require('norman').Collection
 
 class UserWebAPI extends WebAPI
-    api:
-        register: true,
-        login: true
+    @map:
+        register: {access: WebAPI.ACCESS__GUEST},
+        login: {access: WebAPI.ACCESS__GUEST}
 
     register: (params, res, req) ->
         if req.isLoggedIn
@@ -44,26 +45,18 @@ class UserWebAPI extends WebAPI
             res.error(errors).render()
 
     login: (params, res, req) ->
-        if req.isLoggedIn
-            return res.error('User already logged in', 'USER_LOGIN__ALREADY_LOGGED_IN').render()
+        validate(params.email, 'EMAIL__INVALID').isEmail()
+        validate(params.password, 'PASSWORD__SHORT').len(6, 64)
+        validate(params.projectGroupId, 'AUTH__ILLEGAL_PROJECT_GROUP_ID').isInt()
 
-        if not params.projectGroupId
-            return res.error('Undefined project group', 'USER_LOGIN__PROJECT_GROUP_UNDEFINED').render()
-
-        new Collection(
-            model: User,
-            filters:
-                email: params.email,
-                password: md5(params.password),
-                projectGroupId: params.projectGroupId
-        ).load()
-            .then (users) ->
-                UserSession.open(users.first())
+        User.login(params.email, params.password, params.projectGroupId)
+            .then (user) ->
+                UserSession.open(user)
 
             .then (session) ->
                 res.render sid: session.hash
 
             .fail (err) ->
-                res.error(err.toString(), err.code).render()
+                res.error(err.code).render()
 
 module.exports = UserWebAPI
