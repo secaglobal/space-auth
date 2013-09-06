@@ -3,12 +3,13 @@ UserSession = require '../model/user/session'
 Q = require 'q'
 
 setAuthProperties = (req, user) ->
-    req.authUser = user
+    req.authUser = user or false
     req.authType = if user then 'USER' else 'GUEST'
     req.isLoggedIn = !!user
 
 module.exports = (req, res, next) ->
-    if req.cookies.sid
+    rpgid = req.projectGroupId
+    if req.cookies.sid and req.projectGroupId
         new Collection(
             model:UserSession,
             fields: ['user']
@@ -17,10 +18,10 @@ module.exports = (req, res, next) ->
         ).load()
             .then (sessions) ->
                 session = sessions.first()
-                if session
-                    setAuthProperties(req, session.user)
+                pgid = 0
+                pgid = session.user.projectGroupId if session and session.user
 
-                setAuthProperties(req)
+                setAuthProperties req, pgid is rpgid and session and session.user
                 next()
     else
         setAuthProperties(req)

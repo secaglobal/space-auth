@@ -11,7 +11,7 @@ class UserSession extends ORM.Model
         expire: Number,
         user: User
 
-    @open: (user, ip) ->
+    @open: (user, ip = '') ->
         if not (user instanceof User)
             throw new Exception 'SESSION__ILLEGAL_USER_INSTANCE'
 
@@ -19,7 +19,7 @@ class UserSession extends ORM.Model
             throw new Exception 'SESSION__ILLEGAL_USER_INSTANCE'
 
         time = parseInt(new Date().getTime() / 1000)
-        str = new Date().getTime() + '_' + user.id + '_' + user.added + '_' + ip
+        str = new Date().getTime() + "_#{user.id}_#{user.added}_#{ip}"
         session = new @(userId: user.id, hash: md5(str), added: time,  expire: time + 86400)
         session.save().then () -> session
 
