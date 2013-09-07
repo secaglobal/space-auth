@@ -22,7 +22,7 @@ describe '@ExtAuth', () ->
 
         col = ORM.Collection.prototype.load.firstCall.thisValue
         expect(col.config.filters.hash).be.deep.equal 12345
-        expect(col.config.filters.expire['$lt']).be.most new Date().getTime() / 1000
+        expect(col.config.filters.expire['$gt']).be.most new Date().getTime() / 1000
 
     it 'should setup user if projectGroupId is ok', (done) ->
         req = {cookies: {sid: 12345}, projectGroupId: 1}
@@ -31,7 +31,6 @@ describe '@ExtAuth', () ->
 
         @_deferred.promise
             .then () ->
-                console.log req.authUser
                 expect(req.authUser).be.equal user
                 expect(req.authType).be.equal 'USER'
                 expect(req.isLoggedIn).be.equal true

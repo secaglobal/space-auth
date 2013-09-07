@@ -1,3 +1,4 @@
+Core = require 'space-core'
 Collection = require('norman').Collection
 UserSession = require '../model/user/session'
 Q = require 'q'
@@ -13,7 +14,7 @@ module.exports = (req, res, next) ->
         new Collection(
             model:UserSession,
             fields: ['user']
-            filters: {hash: req.cookies.sid, expire: {$lt: new Date().getTime() / 1000}},
+            filters: {hash: req.cookies.sid, expire: {$gt: Core.Util.getServerTime()}},
             limit: 1
         ).load()
             .then (sessions) ->
