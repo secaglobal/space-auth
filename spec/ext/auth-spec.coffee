@@ -1,5 +1,5 @@
 md5 = require 'md5'
-Q = require 'Q'
+Q = require 'q'
 Core = require 'space-core'
 ORM = require 'norman'
 User = require "#{LIBS_PATH}/model/user"

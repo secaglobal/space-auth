@@ -1,4 +1,4 @@
-Q = require 'Q'
+Q = require 'q'
 Core = require 'space-core'
 
 UserWebAPI = require "#{LIBS_PATH}/web-api/user"
